@@ -5,6 +5,8 @@ import {
   getPosition,
   checkWinner,
 } from "../utils/board.utils";
+import { useGetScore } from "../services/get-score.service";
+import { useUpdateScore } from "../services/update-score.service";
 
 type Props = {
   numOfTiles: number;
@@ -15,7 +17,9 @@ export const Board = ({ numOfTiles }: Props) => {
     setInitialBoard(numOfTiles)
   );
   const [turn, setTurn] = useState<XorO>("X");
-  const [score, setScore] = useState({ X: 0, O: 0 });
+
+  const { data: score } = useGetScore();
+  const { mutate: updateScore } = useUpdateScore();
 
   const onTileClick = (index: number, index2: number) => {
     setTurn(turn === "X" ? "O" : "X");
@@ -24,9 +28,9 @@ export const Board = ({ numOfTiles }: Props) => {
     newBoard[getPosition(index, index2, numOfTiles)] = turn;
     setBoard(newBoard);
 
-    if (checkWinner(newBoard, turn, numOfTiles)) {
+    if (checkWinner(newBoard, turn, numOfTiles) && score) {
       resetBoard();
-      setScore({ ...score, [turn]: score[turn] + 1 });
+      updateScore({ ...score, [turn]: score[turn] + 1 });
     }
   };
 
@@ -64,10 +68,10 @@ export const Board = ({ numOfTiles }: Props) => {
 
       <div className="flex gap-2 justify-center text-xl text-gray-700">
         <div>
-          X: <span className="font-bold text-black">{score.X}</span>
+          X: <span className="font-bold text-black">{score?.X ?? 0}</span>
         </div>
         <div>
-          O: <span className="font-bold text-black">{score.O}</span>
+          O: <span className="font-bold text-black">{score?.O ?? 0}</span>
         </div>
       </div>
     </div>
