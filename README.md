@@ -15,6 +15,7 @@ Things I would have considered if I had more time:
 - A local backup for the score if the network requests fail for whatever reason
 - Put the database URL in an environment variable
 - Ability to reset the scores
+- Unit tests
 
 To start run both:
 
