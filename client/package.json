@@ -6,7 +6,8 @@
     "build": "webpack --mode production",
     "start": "webpack serve",
     "test": "jest",
-    "lint": "eslint"
+    "lint": "eslint",
+    "start-json-server": "json-server --watch db.json --port 3000"
   },
   "keywords": [],
   "author": "",
